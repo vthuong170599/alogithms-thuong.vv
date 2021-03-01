@@ -34,3 +34,17 @@ function findProductByprice($arr, $price)
     var_dump($product);
     echo '<pre>';
 }
+
+function sortByPrice($arr)
+{
+    for ($i = 0; $i < count($arr); $i++) {
+        for ($j = 0; $j < count($arr) - 1; $j++) {
+            if ($arr[$j]['price'] < $arr[$j + 1]['price']) {
+                $tmp = $arr[$j + 1]['price'];
+                $arr[$j + 1]['price'] = $arr[$j]['price'];
+                $arr[$j]['price'] = $tmp;
+            }
+        }
+    }
+    return $arr;
+}

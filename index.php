@@ -10,5 +10,11 @@
     // var_dump(findProductByName($arr,'sp3'));
     // var_dump(findProductByCategory($arr,2));
     // var_dump(findProductByprice($arr,'2000'));
-    findProductByprice($product,'70');
+    // findProductByprice($product,'70');
+    $arr = sortByPrice($product);
+    foreach($arr as $value){
+        echo '<pre>';
+        echo $value['price'];
+        echo '<pre>';
+    }
 ?>
