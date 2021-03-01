@@ -7,14 +7,17 @@
         ['name'=>'Main','price'=>'400','id_cate'=>1,'quantity'=>3],
         ['name'=>'Keyboard','price'=>'30','id_cate'=>4,'quantity'=>8],
     ];
+    $arr1 = [1,3,4,2,5,7,6];
     // var_dump(findProductByName($arr,'sp3'));
     // var_dump(findProductByCategory($arr,2));
     // var_dump(findProductByprice($arr,'2000'));
     // findProductByprice($product,'70');
-    $arr = sortByPrice($product);
+    $arr = sortByName($product);
     foreach($arr as $value){
         echo '<pre>';
-        echo $value['price'];
+        echo $value['name'];
         echo '<pre>';
     }
+
+    // sortByName($product);
 ?>
