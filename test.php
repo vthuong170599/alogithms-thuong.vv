@@ -1,84 +1,207 @@
 <?php
 // bai 4
-function findProductByName($arr, $name)
+function findProductByName($productList, $name)
 {
-    foreach ($arr as $value) {
-        if ($value['name'] == $name) {
-            return $value;
+    foreach ($productList as $product) {
+        if ($product['name'] == $name) {
+            return $product;
         }
     }
     return null;
 }
 
 // bai 5
-function findProductByCategory($arr, $id)
+function findProductByCategory($productList, $categoryID)
 {
-    $product = array();
-    foreach ($arr as $value) {
-        if ($value['id_cate'] == $id) {
-            array_push($product, $value);
+    $productArr = array();
+    foreach ($productList as $product) {
+        if ($product['id_cate'] == $categoryID) {
+            array_push($productArr, $product);
         }
     }
     echo '<pre>';
-    var_dump($product);
+    var_dump($productArr);
     echo '<pre>';
 }
 
 // bai 6
-function findProductByprice($arr, $price)
+function findProductByprice($productList, $price)
 {
-    $product = array();
-    foreach ($arr as $value) {
-        if ($value['price'] == $price) {
-            array_push($product, $value);
+    $productArr = array();
+    foreach ($productList as $product) {
+        if ($product['price'] == $price) {
+            array_push($productArr, $product);
         }
     }
     echo '<pre>';
-    var_dump($product);
+    var_dump($productArr);
     echo '<pre>';
 }
 
 // bai 11
-function sortByPrice($arr)
+function sortByPrice($productList)
 {
-    for ($i = 0; $i < count($arr); $i++) {
-        for ($j = 0; $j < count($arr) - 1; $j++) {
-            if ($arr[$j]['price'] > $arr[$j + 1]['price']) {
-                $tmp = $arr[$j + 1]['price'];
-                $arr[$j + 1]['price'] = $arr[$j]['price'];
-                $arr[$j]['price'] = $tmp;
+    for ($i = 0; $i < count($productList); $i++) {
+        for ($j = 0; $j < count($productList) - 1; $j++) {
+            if ($productList[$j]['price'] > $productList[$j + 1]['price']) {
+                $tmp = $productList[$j + 1]['price'];
+                $productList[$j + 1]['price'] = $productList[$j]['price'];
+                $productList[$j]['price'] = $tmp;
             }
         }
     }
-    return $arr;
+    return $productList;
 }
 
 
 // bai 12
-function sortByName($arr)  {
-    // Tổng số phần tử
-    $sophantu = count($arr);
-  
-    // Lặp qua từng phần tử của mảng để sắp xếp
-    for ($i = 0; $i < $sophantu; $i++)
-    {
-        // Lặp từ phần tử thứ $i, ví dụ $i = 6
-        // thì sẽ lặp từ phần tử số 6 trở về 0 để kiểm tra
-        $loop = $i;
-  
-        // Lưu lại giá trị của $mang[$i] để khỏi bị mất
-        $current = $arr[$i];
+function sortByName($productList)
+{
+    // product lenght
+    $num = count($productList);
 
-        while($loop > 0 && (strlen($arr[$loop - 1]['name']) > strlen($current['name'])))
-        {
+    // loop array
+    for ($i = 0; $i < $num; $i++) {
+        // loop i from 0 to count(productList)
+        $loop = $i;
+
+        // save productList[i] into the variable current
+        $current = $productList[$i];
+
+        while ($loop > 0 && (strlen($productList[$loop - 1]['name']) > strlen($current['name']))) {
             // Di dời các phần tử lên 1 bậc
-            $arr[$loop] = $arr[$loop - 1];
+            $productList[$loop] = $productList[$loop - 1];
             $loop -= 1;
         }
-  
-        // Gán giá trị $current vào vị trí tìm được
-        $arr[$loop] = $current;
+
+        // assigned value into the current
+        $productList[$loop] = $current;
     }
-  
-    return $arr;
+
+    return $productList;
+}
+
+// get category by id
+function getCategoryNameById($listCategory, $categoryID)
+{
+    foreach ($listCategory as $category) {
+        if ($category['id'] === $categoryID) {
+            return $category['name'];
+        }
+    }
+}
+
+// bai 13
+function sortByCategoryName($listProduct, $listCategory)
+{
+    $amountProducts = count($listProduct);
+
+    for ($i = 0; $i < $amountProducts; $i++) {
+        $valueToInsert = $listProduct[$i];
+        $holePosition = $i;
+        while ($holePosition > 0 && strcmp(getCategoryNameById($listCategory, $listProduct[$holePosition - 1]['id_cate']), getCategoryNameById($listCategory, $valueToInsert['id_cate'])) > 0) {
+            $listProduct[$holePosition] = $listProduct[$holePosition - 1];
+            $holePosition--;
+        }
+
+        $listProduct[$holePosition] = $valueToInsert;
+    }
+
+    return $listProduct;
+}
+
+// bai 15
+function minByPrice($productList)
+{
+    // productList length
+    $length = count($productList);
+    // assigned minPrice into the element 0  of the productList
+    $minPrice = $productList[0]['price'];
+    for ($i = 0; $i < $length; $i++) {
+        // compare minPrice for all elements in the array
+        if ($productList[$i]['price'] < $minPrice) {
+            // save minPrice into the element i of the array if it encounters any smaller word
+            $minPrice = $productList[$i]['price'];
+        }
+    }
+    return $minPrice;
+}
+
+// bai 16
+function maxByPrice($productList)
+{
+    // productList length
+    $length = count($productList);
+    // assigned maxPrice into the element 0  of the productList
+    $maxPrice = $productList[0]['price'];
+    // compare minPrice for all elements in the array
+    for ($i = 0; $i < $length; $i++) {
+        if ($productList[$i]['price'] > $maxPrice) {
+            // save minPrice into the element i of the array if it encounters any bigger word
+            $maxPrice = $productList[$i]['price'];
+        }
+    }
+    return $maxPrice;
+}
+
+// Bai 14
+function mapProductByCategory($listProduct, $listCategory)
+{
+    foreach ($listProduct as &$product) {
+        // add categoryName to array listproduct
+        $product['categoryName'] = getCategoryNameById($listCategory, $product['id_cate']);
+    }
+    return $listProduct;
+}
+
+//Bai 21:
+//basic
+function calSalary($salary, $year)
+{
+    for ($i = 1; $i < $year; $i++) {
+        // count money before $year
+        $salary = ($salary * 1.1);
+    }
+    return $salary;
+}
+
+//recursion
+function calSalaryRecursion($salary, $year)
+{
+    if ($year == 1) {
+        return $salary;
+    } else {
+        // call fuction calsalary until year = 1
+        return calSalary($salary * 1.1, $year - 1);
+    }
+}
+
+// Bai 22
+function callMonth($money, $rate)
+{
+    $startMoney = $money;
+    // count the number of months to find
+    $count = 0;
+    $month = 1000;
+    for ($i = 1; $i < $month; $i++) {
+        // count of money before $month
+        $money = ($money * (1 + $rate));
+        if ($money <= $startMoney * 2) {
+            $count++;
+        }
+    }
+    return $count;
+}
+
+// Bai 23
+function printMenu($menus, $parentID = 0)
+{
+    foreach ($menus as $key => $menu) {
+        if ($menu['parent_id'] == $parentID) {
+            // print menu to the screen
+            echo str_repeat('- -', $menu['parent_id']) . $menu['title']  . '<br>';
+            // call back fucntion printMenu
+            printMenu($menus, $menu['id']);
+        }
+    }
 }
