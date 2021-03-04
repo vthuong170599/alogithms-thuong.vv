@@ -89,6 +89,7 @@ function getCategoryNameById($listCategory, $categoryID)
             return $category['name'];
         }
     }
+    return false;
 }
 
 // bai 13
@@ -117,14 +118,16 @@ function minByPrice($productList)
     $length = count($productList);
     // assigned minPrice into the element 0  of the productList
     $minPrice = $productList[0]['price'];
+    $productMin = array();
     for ($i = 0; $i < $length; $i++) {
         // compare minPrice for all elements in the array
         if ($productList[$i]['price'] < $minPrice) {
             // save minPrice into the element i of the array if it encounters any smaller word
-            $minPrice = $productList[$i]['price'];
+            // $minPrice = $productList[$i]['price'];
+            $product = $productList[$i];
         }
     }
-    return $minPrice;
+    return $productMin;
 }
 
 // bai 16
@@ -134,14 +137,16 @@ function maxByPrice($productList)
     $length = count($productList);
     // assigned maxPrice into the element 0  of the productList
     $maxPrice = $productList[0]['price'];
-    // compare minPrice for all elements in the array
+    $productMax = array();
+    // compare maxPrice for all elements in the array
     for ($i = 0; $i < $length; $i++) {
         if ($productList[$i]['price'] > $maxPrice) {
-            // save minPrice into the element i of the array if it encounters any bigger word
-            $maxPrice = $productList[$i]['price'];
+            // save maxPrice into the element i of the array if it encounters any bigger word
+            // $maxPrice = $productList[$i]['price'];
+            $productMax = $productList[$i];
         }
     }
-    return $maxPrice;
+    return $productMax;
 }
 
 // Bai 14
@@ -182,15 +187,29 @@ function callMonth($money, $rate)
     $startMoney = $money;
     // count the number of months to find
     $count = 0;
-    $month = 1000;
-    for ($i = 1; $i < $month; $i++) {
-        // count of money before $month
-        $money = ($money * (1 + $rate));
-        if ($money <= $startMoney * 2) {
-            $count++;
-        }
+    $interest = $money;
+    while($interest < $money*2){
+        $count++;
+        $interest = $interest + ($interest * $rate);
     }
     return $count;
+}
+
+function calMoney($money, $rate,$month)
+{
+    if($month == 0 ) return $money;
+    return calMoney($money, $rate, $month - 1) + calMoney($money, $rate, $month - 1) * ($rate/100);
+
+}
+function calMonth1($money, $rate)
+{
+    $month = 0;
+    while (calMoney($money, $rate, $month) < $money * 2)
+    {
+        $month++;
+        print_r(calMoney($money,$rate,$month).'<br>');
+    }
+    return $month;
 }
 
 // Bai 23

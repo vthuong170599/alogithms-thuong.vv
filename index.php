@@ -40,4 +40,11 @@ $menu = [
     // var_dump($listProduct);
     // echo '<pre>'
 
-    printMenu($menu,$parentID=0);
+    // printMenu($menu,$parentID=0);
+
+    // echo calSalary(1000,5).'<br>';
+    // echo calSalaryRecursion(1000,5).'<br>';
+
+    // echo callMonth(2000,0.06);
+    echo calMonth1(10000,6);
+    // echo callMoney(200,0.06,12);
